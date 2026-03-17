@@ -25,7 +25,11 @@ class CompanyController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        $companies = Company::with('employees')->latest()->paginate(10);
+        $companies = Company::query()
+            ->with(['employees'])
+            ->withCount('employees')
+            ->latest()
+            ->paginate(10);
 
         return CompanyResource::collection($companies);
     }
@@ -36,7 +40,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company): CompanyResource
     {
-        $company->load('employees');
+        $company->load('employees')->loadCount('employees');
 
         return new CompanyResource($company);
     }

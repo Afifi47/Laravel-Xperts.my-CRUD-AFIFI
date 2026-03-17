@@ -1,188 +1,92 @@
-# Mini-CRM - Laravel Admin Panel  
-**Repository:** Laravel-Xperts.my-CRUD-AFIFI  
-Assessment IT task for Xperts.my
+# Mini CRM - Laravel Assessment
 
-A Mini-CRM admin panel built with Laravel to manage **Companies** and **Employees**. Built for the FNXPERTS SDN. BHD. Web Developer Assessment.
+This repository contains a Mini CRM admin panel built for the FNXPERTS SDN. BHD. Web Developer Assessment.
 
----
+The Laravel application lives in `mini-crm/`.
 
-## Tech Stack
+## Delivered Features
 
-| Layer     | Technology                     |
-|----------|--------------------------------|
-| Backend   | Laravel 11 (PHP 8.2+)          |
-| Auth      | Laravel Breeze (Blade)          |
-| Database  | MySQL / SQLite                  |
-| Storage   | Laravel Storage (public disk)   |
-| API       | Laravel API Resources           |
-| Testing   | Postman / PHPUnit               |
-
----
+- Laravel Breeze authentication with registration disabled
+- Seeded administrator account: `admin@admin.com` / `password`
+- Companies CRUD with logo upload, validation, and public storage support
+- Employees CRUD linked to companies
+- Form Request validation for create and update flows
+- Database migrations and Eloquent relationships
+- Pagination with 10 records per page for companies and employees
+- Web routes for the admin panel and API routes for company data
+- Read-only API endpoint that returns a company, its employees, and `employee_count`
+- Postman collection included at `postman_collection.json`
 
 ## Quick Start
 
+Run all commands from `mini-crm/`.
+
 ```bash
-# 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/mini-crm.git
-cd mini-crm
-
-# 2. Install PHP dependencies
 composer install
-
-# 3. Install Node dependencies & build assets
-npm install && npm run build
-
-# 4. Copy environment file
 cp .env.example .env
-
-# 5. Generate application key
 php artisan key:generate
+```
 
-# 6. Configure your .env (DB credentials, etc.)
-# Edit .env: DB_DATABASE, DB_USERNAME, DB_PASSWORD
+Update `.env` with your database credentials, then run:
 
-# 7. Run migrations + seed initial admin user
+```bash
 php artisan migrate --seed
-
-# 8. Link storage (for company logo access)
 php artisan storage:link
-
-# 9. Start the development server
+npm install
+npm run build
 php artisan serve
 ```
 
-Visit: http://localhost:8000
+Open `http://127.0.0.1:8000` and log in with:
 
-**Default Admin Login:**
 - Email: `admin@admin.com`
 - Password: `password`
 
----
+## API
 
-## Features
+Available endpoints:
 
-- Admin authentication (login/logout only - registration disabled)
-- Companies CRUD with logo upload (minimum 100×100 px)
-- Employees CRUD linked to Companies
-- Pagination (10 entries per page)
-- Laravel Form Request validation
-- Resource Controllers
-- REST API endpoint: `/api/companies/{id}` with employee list and count
-- Secure logo storage via `storage/app/public`
+- `GET /api/companies`
+- `GET /api/companies/{company}`
 
----
+Example response for `GET /api/companies/1`:
 
-## API Usage
-
-### Get a Company with Employees
-
-```
-GET /api/companies/{id}
-Accept: application/json
-```
-
-**Example Response:**
 ```json
 {
   "id": 1,
-  "name": "Acme Corp",
+  "name": "Acme Corporation",
   "email": "contact@acme.com",
   "website": "https://acme.com",
-  "logo": "http://localhost/storage/logos/acme.png",
-  "employee_count": 5,
+  "logo": null,
+  "employee_count": 2,
   "employees": [
     {
       "id": 1,
       "first_name": "John",
       "last_name": "Doe",
+      "full_name": "John Doe",
       "email": "john@acme.com",
-      "phone": "0123456789"
+      "phone": "0123456789",
+      "company_id": 1
     }
-  ]
+  ],
+  "created_at": "2026-03-17T00:00:00.000000Z",
+  "updated_at": "2026-03-17T00:00:00.000000Z"
 }
 ```
 
-Import `postman_collection.json` to run the collection.
+Import `postman_collection.json` into Postman to test the API quickly.
 
----
+## Testing
 
-## Security Measures
+From `mini-crm/`:
 
-- Routes (except API) are protected by `auth` middleware.
-- Passwords hashed via `bcrypt`.
-- CSRF protection on all web forms.
-- File uploads validated for image type and minimum dimensions (100×100 px).
-- SQL injection protection via Eloquent ORM.
-- XSS protection via Blade `{{ }}` escaping.
-- Registration route removed or disabled.
-
----
-
-## Database Schema
-
-### companies
-| Column | Type     | Notes                        |
-|--------|----------|------------------------------|
-| id     | bigint   | Primary key                  |
-| name   | varchar  | Required                     |
-| email  | varchar  | Nullable, unique             |
-| logo   | varchar  | Nullable, stores path         |
-| website| varchar  | Nullable                     |
-| timestamps | -   | created_at, updated_at        |
-
-### employees
-| Column     | Type    | Notes                        |
-|------------|---------|------------------------------|
-| id         | bigint  | Primary key                  |
-| first_name | varchar | Required                     |
-| last_name  | varchar | Required                     |
-| company_id | bigint  | Foreign key to companies.id  |
-| email      | varchar | Nullable                     |
-| phone      | varchar | Nullable                     |
-| timestamps | -       | created_at, updated_at        |
-
----
-
-## Project Structure
-
+```bash
+php artisan test
 ```
-app/
-├── Http/
-│   ├── Controllers/
-│   │   ├── CompanyController.php
-│   │   ├── EmployeeController.php
-│   │   └── Api/CompanyController.php
-│   ├── Requests/
-│   │   ├── StoreCompanyRequest.php
-│   │   ├── UpdateCompanyRequest.php
-│   │   ├── StoreEmployeeRequest.php
-│   │   └── UpdateEmployeeRequest.php
-│   └── Resources/
-│       ├── CompanyResource.php
-│       └── EmployeeResource.php
-├── Models/
-│   ├── Company.php
-│   └── Employee.php
-database/
-├── migrations/
-│   ├── 2024_01_01_000001_create_companies_table.php
-│   └── 2024_01_01_000002_create_employees_table.php
-└── seeders/
-    ├── DatabaseSeeder.php
-    ├── CompanySeeder.php
-    └── EmployeeSeeder.php
-resources/views/
-├── companies/
-│   ├── index.blade.php
-│   ├── create.blade.php
-│   ├── edit.blade.php
-│   └── show.blade.php
-└── employees/
-    ├── index.blade.php
-    ├── create.blade.php
-    ├── edit.blade.php
-    └── show.blade.php
-routes/
-├── web.php
-└── api.php
-```
+
+## Notes
+
+- Company logos are stored on the `public` disk under `storage/app/public/logos`.
+- Uploaded logos require a minimum size of `100x100` and a maximum file size of `2MB`.
+- If you want screenshots versioned with the repository, add them under `docs/screenshots/` before submission.

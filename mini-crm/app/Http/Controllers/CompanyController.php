@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Company;
+use App\Models\Employee;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -34,9 +35,15 @@ class CompanyController extends Controller
      */
     public function index(): View
     {
-        $companies = Company::latest()->paginate(10);
+        $companies = Company::query()
+            ->withCount('employees')
+            ->latest()
+            ->paginate(10);
 
-        return view('companies.index', compact('companies'));
+        $totalCompanies = Company::count();
+        $totalEmployees = Employee::count();
+
+        return view('companies.index', compact('companies', 'totalCompanies', 'totalEmployees'));
     }
 
     /**
@@ -77,7 +84,7 @@ class CompanyController extends Controller
     public function show(Company $company): View
     {
         // Eager-load employees to avoid N+1 query
-        $company->load('employees');
+        $company->load('employees')->loadCount('employees');
 
         return view('companies.show', compact('company'));
     }

@@ -51,6 +51,12 @@ class Company extends Model
      */
     public function getEmployeeCountAttribute(): int
     {
-        return $this->employees()->count();
+        if (isset($this->attributes['employees_count'])) {
+            return (int) $this->attributes['employees_count'];
+        }
+
+        return $this->relationLoaded('employees')
+            ? $this->employees->count()
+            : $this->employees()->count();
     }
 }
