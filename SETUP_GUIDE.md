@@ -63,26 +63,46 @@ This creates:
 npm run build
 ```
 
-For development you can also use:
+If you want live frontend updates while developing, use:
 
 ```bash
 npm run dev
 ```
 
-## 6. Start the App
+## 6. Start the Backend
+
+Run the backend from inside `mini-crm/`.
+
+Use this command:
 
 ```bash
-php artisan serve
+php -S 127.0.0.1:8000 -t public
 ```
 
 Visit `http://127.0.0.1:8000`.
+
+## 7. Start the Frontend
+
+Open a second terminal in `mini-crm/` and run:
+
+```bash
+npm run dev
+```
+
+This starts the Vite frontend dev server for live asset updates while the Laravel backend is running.
+
+If you do not need live frontend updates, you can skip this step and just use the built assets from:
+
+```bash
+npm run build
+```
 
 Default login:
 
 - Email: `admin@admin.com`
 - Password: `password`
 
-## 7. API Check
+## 8. API Check
 
 Use either Postman or curl:
 
@@ -92,7 +112,7 @@ curl -H "Accept: application/json" http://127.0.0.1:8000/api/companies/1
 
 The repository also includes `postman_collection.json`.
 
-## 8. Run Tests
+## 9. Run Tests
 
 ```bash
 php artisan test
@@ -100,6 +120,7 @@ php artisan test
 
 ## Troubleshooting
 
+- If `php artisan serve` fails to bind or resolve `localhost`, use `php -S 127.0.0.1:8000 -t public` instead.
 - If logos are not visible, rerun `php artisan storage:link`.
 - If the database fails to connect, re-check the `.env` credentials.
-- If styles are missing, run `npm run build` again.
+- If styles are missing, run `npm run build` again or keep `npm run dev` running in a second terminal.

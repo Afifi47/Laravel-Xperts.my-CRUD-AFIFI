@@ -34,7 +34,18 @@ php artisan migrate --seed
 php artisan storage:link
 npm install
 npm run build
-php artisan serve
+```
+
+Start the backend in one terminal:
+
+```bash
+php -S 127.0.0.1:8000 -t public
+```
+
+If you want live frontend updates during development, start the frontend in a second terminal:
+
+```bash
+npm run dev
 ```
 
 Open `http://127.0.0.1:8000` and log in with:
@@ -89,4 +100,5 @@ php artisan test
 
 - Company logos are stored on the `public` disk under `storage/app/public/logos`.
 - Uploaded logos require a minimum size of `100x100` and a maximum file size of `2MB`.
+- If `php artisan serve` fails on your machine, use `php -S 127.0.0.1:8000 -t public`.
 - If you want screenshots versioned with the repository, add them under `docs/screenshots/` before submission.
