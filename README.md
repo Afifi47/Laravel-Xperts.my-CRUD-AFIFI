@@ -1,4 +1,6 @@
-# Mini-CRM — Laravel Admin Panel
+# Mini-CRM - Laravel Admin Panel  
+**Repository:** Laravel-Xperts.my-CRUD-AFIFI  
+Assessment IT task for Xperts.my
 
 A Mini-CRM admin panel built with Laravel to manage **Companies** and **Employees**. Built for the FNXPERTS SDN. BHD. Web Developer Assessment.
 
@@ -6,14 +8,14 @@ A Mini-CRM admin panel built with Laravel to manage **Companies** and **Employee
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Backend | Laravel 11 (PHP 8.2+) |
-| Auth | Laravel Breeze (Blade) |
-| Database | MySQL / SQLite |
-| Storage | Laravel Storage (public disk) |
-| API | Laravel API Resources |
-| Testing | Postman / PHPUnit |
+| Layer     | Technology                     |
+|----------|--------------------------------|
+| Backend   | Laravel 11 (PHP 8.2+)          |
+| Auth      | Laravel Breeze (Blade)          |
+| Database  | MySQL / SQLite                  |
+| Storage   | Laravel Storage (public disk)   |
+| API       | Laravel API Resources           |
+| Testing   | Postman / PHPUnit               |
 
 ---
 
@@ -59,14 +61,14 @@ Visit: http://localhost:8000
 
 ## Features
 
-- ✅ Admin authentication (login/logout only — registration disabled)
-- ✅ Companies CRUD with logo upload (min 100×100px)
-- ✅ Employees CRUD linked to Companies
-- ✅ Pagination (10 entries per page)
-- ✅ Laravel Form Request validation
-- ✅ Resource Controllers
-- ✅ REST API endpoint: `/api/companies/{id}` with employee list & count
-- ✅ Secure logo storage via `storage/app/public`
+- Admin authentication (login/logout only - registration disabled)
+- Companies CRUD with logo upload (minimum 100×100 px)
+- Employees CRUD linked to Companies
+- Pagination (10 entries per page)
+- Laravel Form Request validation
+- Resource Controllers
+- REST API endpoint: `/api/companies/{id}` with employee list and count
+- Secure logo storage via `storage/app/public`
 
 ---
 
@@ -100,44 +102,44 @@ Accept: application/json
 }
 ```
 
-Test with Postman: Import the collection from `postman_collection.json` in this repo.
+Import `postman_collection.json` to run the collection.
 
 ---
 
 ## Security Measures
 
-- All routes (except API) are protected by `auth` middleware
-- Passwords hashed via `bcrypt`
-- CSRF protection on all web forms
-- File uploads validated for image type, min dimensions (100×100)
-- SQL injection protection via Eloquent ORM
-- XSS protection via Blade `{{ }}` escaping
-- Registration route removed/disabled
+- Routes (except API) are protected by `auth` middleware.
+- Passwords hashed via `bcrypt`.
+- CSRF protection on all web forms.
+- File uploads validated for image type and minimum dimensions (100×100 px).
+- SQL injection protection via Eloquent ORM.
+- XSS protection via Blade `{{ }}` escaping.
+- Registration route removed or disabled.
 
 ---
 
 ## Database Schema
 
 ### companies
-| Column | Type | Notes |
-|--------|------|-------|
-| id | bigint | PK |
-| name | varchar(255) | Required |
-| email | varchar(255) | Nullable, unique |
-| logo | varchar(255) | Nullable, path |
-| website | varchar(255) | Nullable |
-| timestamps | — | created_at, updated_at |
+| Column | Type     | Notes                        |
+|--------|----------|------------------------------|
+| id     | bigint   | Primary key                  |
+| name   | varchar  | Required                     |
+| email  | varchar  | Nullable, unique             |
+| logo   | varchar  | Nullable, stores path         |
+| website| varchar  | Nullable                     |
+| timestamps | -   | created_at, updated_at        |
 
 ### employees
-| Column | Type | Notes |
-|--------|------|-------|
-| id | bigint | PK |
-| first_name | varchar(255) | Required |
-| last_name | varchar(255) | Required |
-| company_id | bigint | FK → companies.id |
-| email | varchar(255) | Nullable |
-| phone | varchar(50) | Nullable |
-| timestamps | — | created_at, updated_at |
+| Column     | Type    | Notes                        |
+|------------|---------|------------------------------|
+| id         | bigint  | Primary key                  |
+| first_name | varchar | Required                     |
+| last_name  | varchar | Required                     |
+| company_id | bigint  | Foreign key to companies.id  |
+| email      | varchar | Nullable                     |
+| phone      | varchar | Nullable                     |
+| timestamps | -       | created_at, updated_at        |
 
 ---
 
@@ -163,11 +165,12 @@ app/
 │   └── Employee.php
 database/
 ├── migrations/
-│   ├── create_companies_table.php
-│   └── create_employees_table.php
+│   ├── 2024_01_01_000001_create_companies_table.php
+│   └── 2024_01_01_000002_create_employees_table.php
 └── seeders/
     ├── DatabaseSeeder.php
-    └── AdminUserSeeder.php
+    ├── CompanySeeder.php
+    └── EmployeeSeeder.php
 resources/views/
 ├── companies/
 │   ├── index.blade.php
