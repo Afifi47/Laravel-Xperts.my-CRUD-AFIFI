@@ -74,7 +74,7 @@ class CompanyController extends Controller
 
         Company::create($data);
 
-        return redirect()->route('companies.index')
+        return redirect(route('companies.index', absolute: false))
                          ->with('success', 'Company created successfully.');
     }
 
@@ -122,7 +122,7 @@ class CompanyController extends Controller
 
         $company->update($data);
 
-        return redirect()->route('companies.index')
+        return redirect(route('companies.index', absolute: false))
                          ->with('success', 'Company updated successfully.');
     }
 
@@ -140,7 +140,7 @@ class CompanyController extends Controller
 
         $company->delete();
 
-        return redirect()->route('companies.index')
+        return redirect(route('companies.index', absolute: false))
                          ->with('success', 'Company deleted successfully.');
     }
 }

@@ -49,7 +49,7 @@ class EmployeeController extends Controller
     {
         Employee::create($request->validated());
 
-        return redirect()->route('employees.index')
+        return redirect(route('employees.index', absolute: false))
                          ->with('success', 'Employee created successfully.');
     }
 
@@ -80,7 +80,7 @@ class EmployeeController extends Controller
     {
         $employee->update($request->validated());
 
-        return redirect()->route('employees.index')
+        return redirect(route('employees.index', absolute: false))
                          ->with('success', 'Employee updated successfully.');
     }
 
@@ -91,7 +91,7 @@ class EmployeeController extends Controller
     {
         $employee->delete();
 
-        return redirect()->route('employees.index')
+        return redirect(route('employees.index', absolute: false))
                          ->with('success', 'Employee deleted successfully.');
     }
 }

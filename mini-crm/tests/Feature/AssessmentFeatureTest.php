@@ -63,4 +63,42 @@ class AssessmentFeatureTest extends TestCase
 
         $response->assertOk();
     }
+
+    public function test_authenticated_users_can_delete_a_company(): void
+    {
+        $user = User::factory()->create();
+        $company = Company::create([
+            'name' => 'Delete Me Company',
+            'email' => 'delete-company@test.com',
+            'website' => 'https://delete-company.test',
+        ]);
+
+        $response = $this->actingAs($user)->delete(route('companies.destroy', $company));
+
+        $response->assertRedirect(route('companies.index', absolute: false));
+        $this->assertDatabaseMissing('companies', ['id' => $company->id]);
+    }
+
+    public function test_authenticated_users_can_delete_an_employee(): void
+    {
+        $user = User::factory()->create();
+        $company = Company::create([
+            'name' => 'Employee Delete Company',
+            'email' => 'employee-company@test.com',
+            'website' => 'https://employee-company.test',
+        ]);
+
+        $employee = Employee::create([
+            'first_name' => 'Delete',
+            'last_name' => 'Employee',
+            'company_id' => $company->id,
+            'email' => 'delete-employee@test.com',
+            'phone' => '0123456789',
+        ]);
+
+        $response = $this->actingAs($user)->delete(route('employees.destroy', $employee));
+
+        $response->assertRedirect(route('employees.index', absolute: false));
+        $this->assertDatabaseMissing('employees', ['id' => $employee->id]);
+    }
 }

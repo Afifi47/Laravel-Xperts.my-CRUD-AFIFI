@@ -3,7 +3,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-3">
-            <a href="{{ route('employees.index') }}" class="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600">
+            <a href="{{ route('employees.index', absolute: false) }}" class="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
@@ -17,7 +17,7 @@
 
     <div class="max-w-2xl">
         <div class="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm">
-            <form action="{{ route('employees.update', $employee) }}" method="POST">
+            <form action="{{ route('employees.update', $employee, absolute: false) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -90,7 +90,7 @@
                 </div>
 
                 <div class="mt-8 flex items-center justify-end gap-3 border-t border-gray-100 pt-6">
-                    <a href="{{ route('employees.index') }}"
+                    <a href="{{ route('employees.index', absolute: false) }}"
                        class="rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50">
                         Cancel
                     </a>

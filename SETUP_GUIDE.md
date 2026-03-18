@@ -69,6 +69,8 @@ If you want live frontend updates while developing, use:
 npm run dev
 ```
 
+If you stop `npm run dev`, make sure the app is using built assets again. A stale `public/hot` file can make the browser keep pointing to the Vite dev server and cause frontend behavior to feel inconsistent.
+
 ## 6. Start the Backend
 
 Run the backend from inside `mini-crm/`.
@@ -81,6 +83,12 @@ php -S 127.0.0.1:8000 -t public
 
 Visit `http://127.0.0.1:8000`.
 
+Important:
+
+- Use the same host everywhere. If you start the app on `127.0.0.1`, browse `http://127.0.0.1:8000`.
+- Do not mix `localhost:8000` and `127.0.0.1:8000` in the same session because login, CSRF, and delete/update form actions can behave inconsistently.
+- If you prefer `localhost`, set `APP_URL=http://localhost:8000` and use `http://localhost:8000` in the browser.
+
 ## 7. Start the Frontend
 
 Open a second terminal in `mini-crm/` and run:
@@ -90,6 +98,8 @@ npm run dev
 ```
 
 This starts the Vite frontend dev server for live asset updates while the Laravel backend is running.
+
+For the most stable CRUD behavior during review/testing, prefer `npm run build` unless you specifically need live frontend hot reload.
 
 If you do not need live frontend updates, you can skip this step and just use the built assets from:
 

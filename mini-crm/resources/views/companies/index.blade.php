@@ -50,7 +50,7 @@
                     <p class="text-sm font-medium text-blue-100">Quick Action</p>
                     <p class="mt-1 text-lg font-bold text-white">Add Company</p>
                 </div>
-                <a href="{{ route('companies.create') }}"
+                <a href="{{ route('companies.create', absolute: false) }}"
                    class="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur transition-colors hover:bg-white/30">
                     <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -72,7 +72,7 @@
     <div class="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
         <div class="flex items-center justify-between border-b border-gray-100 px-6 py-4">
             <h3 class="font-semibold text-gray-800">Companies List</h3>
-            <a href="{{ route('companies.create') }}"
+            <a href="{{ route('companies.create', absolute: false) }}"
                class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:from-blue-700 hover:to-indigo-700 hover:shadow-md">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -89,7 +89,7 @@
                         <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Website</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Email</th>
                         <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Employees</th>
-                        <th class="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
+                        <th class="w-32 px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
@@ -106,7 +106,7 @@
                                         </div>
                                     @endif
                                     <div>
-                                        <a href="{{ route('companies.show', $company) }}" class="font-semibold text-gray-900 transition-colors hover:text-blue-600">
+                                        <a href="{{ route('companies.show', $company, absolute: false) }}" class="font-semibold text-gray-900 transition-colors hover:text-blue-600">
                                             {{ $company->name }}
                                         </a>
                                     </div>
@@ -126,21 +126,27 @@
                                     {{ $company->employees_count }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('companies.edit', $company) }}"
-                                       class="rounded-lg p-2 text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600" title="Edit">
+                            <td class="w-32 px-6 py-4">
+                                <div class="flex items-center justify-center gap-3">
+                                    <a href="{{ route('companies.edit', $company, absolute: false) }}"
+                                       class="inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-blue-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                                       aria-label="Edit {{ $company->name }}">
                                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>
                                     </a>
-                                    <form action="{{ route('companies.destroy', $company) }}" method="POST" class="inline"
-                                          onsubmit="return confirm('Delete {{ addslashes($company->name) }}? This cannot be undone.')">
+                                    <form action="{{ route('companies.destroy', $company, absolute: false) }}"
+                                          method="POST"
+                                          class="inline-block shrink-0"
+                                          data-confirm-delete
+                                          data-confirm-message="{{ 'Delete '.e($company->name).'? This cannot be undone.' }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                                class="rounded-lg p-2 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600" title="Delete">
-                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                class="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-200"
+                                                data-delete-submit
+                                                aria-label="Delete {{ $company->name }}">
+                                            <svg class="h-4 w-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                             </svg>
                                         </button>
@@ -158,7 +164,7 @@
                                         </svg>
                                     </div>
                                     <p class="text-gray-500">No companies found</p>
-                                    <a href="{{ route('companies.create') }}" class="text-sm text-blue-600 hover:underline">Create your first company</a>
+                                    <a href="{{ route('companies.create', absolute: false) }}" class="text-sm text-blue-600 hover:underline">Create your first company</a>
                                 </div>
                             </td>
                         </tr>
