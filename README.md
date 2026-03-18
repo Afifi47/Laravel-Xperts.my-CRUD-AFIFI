@@ -88,6 +88,16 @@ Example response for `GET /api/companies/1`:
 
 Import `postman_collection.json` into Postman to test the API quickly.
 
+## Screenshots
+
+Working UI and API screenshots are included under `docs/screenshots/`:
+
+![CRUD UI](docs/screenshots/crud-ui.png)
+
+![Pagination](docs/screenshots/pagination.png)
+
+![API Response](docs/screenshots/api-response.png)
+
 ## Testing
 
 From `mini-crm/`:

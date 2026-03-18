@@ -63,4 +63,38 @@ class AssessmentFeatureTest extends TestCase
 
         $response->assertOk();
     }
+
+    public function test_api_explorer_requires_authentication(): void
+    {
+        $response = $this->get(route('api-explorer.show'));
+
+        $response->assertRedirect(route('login', absolute: false));
+    }
+
+    public function test_authenticated_users_can_view_api_explorer_for_a_company(): void
+    {
+        $user = User::factory()->create();
+
+        $company = Company::create([
+            'name' => 'Nova Orbit Systems',
+            'email' => 'nova@orbit.test',
+            'website' => 'https://nova.test',
+        ]);
+
+        Employee::create([
+            'first_name' => 'Ariana',
+            'last_name' => 'Lopez',
+            'company_id' => $company->id,
+            'email' => 'ariana@orbit.test',
+            'phone' => '0123001001',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('api-explorer.show', ['company' => $company]));
+
+        $response->assertOk()
+            ->assertSeeText('API Explorer')
+            ->assertSeeText('Nova Orbit Systems')
+            ->assertSeeText('employee_count')
+            ->assertSee(route('api.companies.show', $company));
+    }
 }

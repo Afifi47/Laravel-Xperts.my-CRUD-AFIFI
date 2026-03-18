@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiExplorerController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
@@ -16,6 +17,7 @@ Route::get('/dashboard', function () {
 })->middleware('auth')->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/api-explorer', [ApiExplorerController::class, 'show'])->name('api-explorer.show');
     Route::resource('companies', CompanyController::class);
     Route::resource('employees', EmployeeController::class);
 
